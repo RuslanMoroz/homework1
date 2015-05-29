@@ -1,43 +1,18 @@
 -module(p07).
--export([flatten/1, reverse/2]).
+-export([flatten/1]).
 
 flatten(Structure)->
-    flatten(reverse(Structure, []), []).
+    p05:reverse(flatten(Structure, [])).
 
-reverse([], ReverseList)->
-    ReverseList;
+flatten([[_|_]=H|T], Acc)->
+    flatten(T, flatten(H,Acc));
 
-reverse([H|T], [])->
-    ReverseList1=[reverse(H, [])],
-    reverse(T, ReverseList1);
+flatten([H|[]], Acc)->
+    flatten([], [H|Acc]);
 
-reverse([H|T], ReverseList)->
-    ReverseList1=[reverse(H, [])|ReverseList],
-    reverse(T, ReverseList1);
-
-reverse(E, _)->
-    E.
+flatten([H|T], Acc)->
+    flatten(T, [H|Acc]);
 
 
 flatten([], NewStructure)->
-    NewStructure;
-
-flatten([[_|_]=H|[T]], NewStructure)->
-     io:format("~p~n",[H]),
-     [T|flatten(H, NewStructure)];
-
-flatten([H|[T]], NewStructure)->
-     [T|[H]];
-
-flatten([H|[]], NewStructure)->
-     H;
-
-flatten([[_|_]=H|[]], NewStructure)->
-    H;
-
-flatten([H|T], NewStr)->
-    io:format("H:~p~nT:~p~n",[H, T]),
-    [flatten(T, NewStr)|[flatten(H, NewStr)]];
-
-flatten(H, NewStr)->
-    H.
+    NewStructure.
